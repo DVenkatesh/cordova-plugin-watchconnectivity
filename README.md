@@ -91,12 +91,6 @@ func sendMessage:(message: String) -> Void{
 }
 ```
 
-### Install iOS platform
-cordova platform add ios
-    
-### Run the code
-cordova run 
-
 ## Credits
 Written by [Venkatesh D](https://www.linkedin.com/in/dvenkateshd) and [Vagish M M](http:///)
 
