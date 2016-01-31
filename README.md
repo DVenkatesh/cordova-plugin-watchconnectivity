@@ -36,11 +36,11 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
     }
     sswc.init(success, failure);
 ```
-Install iOS platform
-    cordova platform add ios
+### Install iOS platform
+cordova platform add ios
     
-Run the code
-    cordova run 
+### Run the code
+cordova run 
 
 ## Credits
 Written by [Venkatesh D](https://www.linkedin.com/in/dvenkateshd) and [Vagish M M](http:///)
