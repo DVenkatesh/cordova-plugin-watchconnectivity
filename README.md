@@ -36,6 +36,14 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
     }
     sswc.init(success, failure);
 ```
+## Use from iWatch extension
+### Objective-C
+```objective-c
+```
+### Swift
+```swift
+```
+
 ### Install iOS platform
 cordova platform add ios
     
