@@ -66,7 +66,29 @@ if ([WCSession isSupported]) {
 ```
 ### Swift
 ```swift
-
+// Setup and activate session in awakeWithContext or willActivate
+if WCSession.isSupported() {
+    let session = WCSession.defaultSession()
+    session.delegate = self
+    session.activateSession()
+}
+// Implement didReceiveMessage WatchConnectivity handler/callback to receive incoming messages
+func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+    let message = message["message"] as? String
+    print(message)
+    self.sendMessage("Message from iWatch")
+}
+// Send message
+func sendMessage:(message: String) -> Void{
+    let message = ["message": message]
+    WCSession.defaultSession()!.sendMessage(["message": message], 
+                                replyHandler: { (response) -> Void in
+                                    print("Send message success")
+                                }, errorHandler: { (error) -> Void in
+                                    print("Send message failed")
+                                })
+     
+}
 ```
 
 ### Install iOS platform
