@@ -39,9 +39,34 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 ## Use from iWatch extension
 ### Objective-C
 ```objective-c
+// Setup and activate session in awakeWithContext or willActivate
+if ([WCSession isSupported]) {
+    WCSession *session = [WCSession defaultSession];
+    session.delegate = self;
+    [session activateSession];
+}
+// Implement didReceiveMessage WatchConnectivity handler/callback to receive incoming messages
+- (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void(^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
+    NSString *message = [message objectForKey:@"message"];
+    NSLog(@"%@",message);
+    [self sendMessage:@"Message from iWatch"];
+}
+// Send message
+- (void)sendMessage:(NSString*)message {
+    NSDictionary *messageDictionary = [[NSDictionary alloc] initWithObjects:@[message] forKeys:@[@"message"]];
+    [[WCSession defaultSession] sendMessage:messageDictionary
+                               replyHandler:^(NSDictionary *reply) {
+                                   NSLog(@"Send message success");
+                               }
+                               errorHandler:^(NSError *error) {
+                                   NSLog(@"Send message failed");
+                               }
+     ];
+}
 ```
 ### Swift
 ```swift
+
 ```
 
 ### Install iOS platform
