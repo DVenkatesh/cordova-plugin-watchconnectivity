@@ -19,5 +19,6 @@
     </config-file>
     <header-file src="src/ios/WCiOS.h" target-dir="WCPlugin"/>
     <source-file src="src/ios/WCiOS.m" target-dir="WCPlugin"/>
+    <framework src="WatchConnectivity.framework" />
   </platform>
 </plugin>
