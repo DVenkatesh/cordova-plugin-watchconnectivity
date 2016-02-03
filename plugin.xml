@@ -5,7 +5,7 @@
 
   <name>WatchConnectivity</name>
   <engines>
-    <engine name="cordova" version=">=3.4.0"/>
+    <engine name="cordova" version=">=3.4.1"/>
   </engines>
   <asset src="www/watchconnectivity.js" target="js/watchconnectivity.js"/>
   <js-module src="www/watchconnectivity.js" name="sswc">
