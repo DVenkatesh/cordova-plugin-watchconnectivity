@@ -31,10 +31,10 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         alert("Error");
     }
     var success = function() {
-        sswc.messageReceiver(didReceiveMessage, failure);
-        sswc.sendMessage("Message from phone", msgSendSuccess, failure);
+        iWatchConnectivity.messageReceiver(didReceiveMessage, failure);
+        iWatchConnectivity.sendMessage("Message from phone", msgSendSuccess, failure);
     }
-    sswc.init(success, failure);
+    iWatchConnectivity.init(success, failure);
 ```
 ## Use from iWatch extension
 ### Objective-C
