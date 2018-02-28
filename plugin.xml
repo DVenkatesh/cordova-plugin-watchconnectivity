@@ -10,8 +10,8 @@
   </engines>
   <asset src="www/watchconnectivity.js" target="js/watchconnectivity.js"/>
 
-  <js-module src="www/watchconnectivity.js" name="sswc">
-    <clobbers target="sswc" />
+  <js-module src="www/watchconnectivity.js" name="iWatchConnectivity">
+    <clobbers target="iWatchConnectivity" />
   </js-module>
 
   <platform name="ios">

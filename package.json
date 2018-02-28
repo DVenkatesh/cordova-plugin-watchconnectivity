@@ -16,7 +16,13 @@
     "type": "git",
     "url": "git+https://github.com/DVenkatesh/cordova-plugin-watchconnectivity.git"
   },
-  "keywords": ["cordova","watchos","apple","ionic","watchconnectivity"],
+  "keywords": [
+    "cordova",
+    "watchos",
+    "apple",
+    "ionic",
+    "watchconnectivity"
+  ],
   "author": "Originally Written by Venkatesh D and Vagish M M",
   "license": "ISC",
   "bugs": {
