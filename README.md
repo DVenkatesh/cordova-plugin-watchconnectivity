@@ -37,6 +37,14 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
     iWatchConnectivity.init(success, failure);
 ```
 ## Use from iWatch extension
+
+Please note that only values assigned to the key "message" will be received on your hybrid app.
+```swift
+let message = ["message": "this will work"];
+let message = ["data": "this is not recognised"];
+let message = ["foobar": "this is also not recognised"]
+```
+
 ### Objective-C
 ```objective-c
 // Setup and activate session in awakeWithContext or willActivate
