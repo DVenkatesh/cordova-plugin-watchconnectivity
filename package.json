@@ -3,6 +3,9 @@
   "version": "1.2.0",
   "description": "WatchConnectivity",
   "main": "www/watchconnectivity.js",
+  "platforms": [
+    "ios"
+  ],
   "directories": {
     "lib": "src/ios"
   },
@@ -15,7 +18,7 @@
   },
   "keywords": ["cordova","watchos","apple","ionic","watchconnectivity"],
   "author": "Originally Written by Venkatesh D and Vagish M M",
-  "license": "MIT",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/DVenkatesh/cordova-plugin-watchconnectivity/issues"
   },
