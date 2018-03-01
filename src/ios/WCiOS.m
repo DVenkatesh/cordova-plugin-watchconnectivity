@@ -1,8 +1,10 @@
 #import "WCiOS.h"
 
 @implementation WCiOS
+
 @synthesize messageReceiver;
 @synthesize messageString;
+
 - (void)init:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate runInBackground:^{
@@ -16,7 +18,7 @@
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"WCSession is not supported!"];
         }
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId: callbackId];
     }];
 }
 - (void)messageReceiver:(CDVInvokedUrlCommand*)command {
@@ -24,6 +26,9 @@
 }
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void(^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     dispatch_async(dispatch_get_main_queue(), ^{
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : message];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
         replyHandler([[NSDictionary alloc] initWithObjects:@[self.messageString?self.messageString:@""] forKeys:@[@"message"]]);
     });
 }
