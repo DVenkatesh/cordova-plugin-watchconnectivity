@@ -3,7 +3,7 @@
 @implementation WCiOS
 
 @synthesize messageReceiver;
-@synthesize messageString;
+@synthesize messageDictionary;
 
 - (void)init:(CDVInvokedUrlCommand*)command
 {
@@ -29,19 +29,23 @@
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : message];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
-        replyHandler([[NSDictionary alloc] initWithObjects:@[self.messageString?self.messageString:@""] forKeys:@[@"message"]]);
+        replyHandler(message);
     });
 }
 - (void)sendMessage:(CDVInvokedUrlCommand*)command {
-    NSString* message = [[command arguments] objectAtIndex:0];
-    if (message != nil) {
-        self.messageString = message;
+    NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
+    if (messageDictionary != nil) {
+        [[WCSession defaultSession] sendMessage:messageDictionary
+                                   replyHandler:^(NSDictionary *reply) {}
+                                   errorHandler:^(NSError *error) {}
+         ];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    } else {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
-    NSDictionary *messageDictionary = [[NSDictionary alloc] initWithObjects:@[message] forKeys:@[@"message"]];
-    [[WCSession defaultSession] sendMessage:messageDictionary
-                               replyHandler:^(NSDictionary *reply) {}
-                               errorHandler:^(NSError *error) {}
-     ];
 }
 
 @end
+

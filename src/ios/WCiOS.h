@@ -4,11 +4,11 @@
 @interface WCiOS : CDVPlugin <WCSessionDelegate>
 {
     NSString *messageReceiver;
-    NSString *messageString;
+    NSDictionary *messageDictionary;
 }
 
 @property (nonatomic, strong) NSString *messageReceiver;
-@property (nonatomic, copy) NSString *messageString;
+@property (nonatomic, copy) NSDictionary *messageDictionary;
 
 - (void) init:(CDVInvokedUrlCommand*)command;
 - (void) messageReceiver:(CDVInvokedUrlCommand*)command;
