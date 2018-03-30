@@ -1,6 +1,6 @@
 # Cordova Watch Connectivity Plugin
 
-Simple plugin that establishes iOS Watch Connectivity session with Watch OS 2 / 3 / 4 and helps exchange of messages between an iPhone hybrid application and its iWatch application and vice-versa.
+Simple plugin that establishes iOS Watch Connectivity session with Watch OS 2 / 3 / 4 and helps exchange of messages between an iPhone hybrid application and its Apple Watch application and vice-versa.
 
 ## Installation
 
@@ -68,18 +68,20 @@ func session(_ session: WCSession, activationDidCompleteWith activationState: WC
     // Session started :: phone x watch
     if (error != nil) {
         print("InterfaceController :: session :: error: ", error);
+    } else {
+        print("InterfaceController :: session :: state: ", activationState);
     }
 }
 
 // Implement didReceiveMessage WatchConnectivity handler/callback to receive incoming messages
 func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-    // Receiving messages
+    // Receiving messages from iPhone
     print("InterfaceController :: session :: message: ", message);
 }
 
-// Send message
+// Sending a message to iPhone
 func sendMessage:(message: String) -> Void{
-    let message = ["message":: "hello from watch", "value": "4321", "bar": "foo"]
+    let message = ["message": "hello from watch", "value": "4321", "bar": "foo"]
     WCSession.default.sendMessage( 
         message,
         replyHandler: { (response) -> Void in
