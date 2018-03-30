@@ -46,13 +46,13 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         iWatchConnectivity.messageReceiver(receiveMessageSuccess, receiveMessageFailure);
     };
     var initWatchFailure = function() {
-        alert("Could not connect to AppleWatch.");
+        alert("Could not connect to Apple Watch.");
     };
     
     // Starts things up - WCSession.default
     iWatchConnectivity.init(initWatchSuccess, initWatchFailure);
 ```
-## Use from iWatch extension
+## Use from Apple Watch extension
 
 ### Swift
 ```swift
@@ -132,7 +132,7 @@ Originally written by [Venkatesh D](https://www.linkedin.com/in/dvenkateshd) and
 <br>
 [https://github.com/DVenkatesh/cordova-plugin-watchconnectivity](https://github.com/DVenkatesh/cordova-plugin-watchconnectivity)
 
-With contributions of:
+With (many) contributions of:
 [Gui Keller](https://www.github.com/guikeller)
 
 ## More Info
