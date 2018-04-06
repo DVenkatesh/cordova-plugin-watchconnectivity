@@ -43,7 +43,10 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         // Sends a message
         var data = {message: "hello from phone", value: "1234", foo: "bar"};
         iWatchConnectivity.sendMessage(data, sendMessageSuccess, sendMessageFailure);
-        // Receive messages
+	// Alternative way of sending a message
+	iWatchConnectivity.updateApplicationContext(data, sendMessageSuccess, sendMessageFailure);
+        
+	// Receive messages
         iWatchConnectivity.messageReceiver(receiveMessageSuccess, receiveMessageFailure);
     };
     var initWatchFailure = function() {
