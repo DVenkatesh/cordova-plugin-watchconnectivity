@@ -20,7 +20,7 @@ With ionic:
 ## Use from Javascript
 Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 ```js
-    // Receiving messages from Watch :: iWatch -> iPhone
+    // Receiving messages from Watch :: AppleWatch -> iPhone
     var receiveMessageSuccess = function(message){
         // Either from sendMessage or updateApplicationContext
         var value = JSON.stringify(message);
@@ -30,7 +30,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         alert("Could not receive message from Apple Watch");
     };
 
-    // Sending Messages to Watch :: iPhone -> iWatch
+    // Sending Messages to Watch :: iPhone -> AppleWatch
     var sendMessageSuccess = function() {
         alert("Message sent successfully!");
     };
