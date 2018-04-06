@@ -35,11 +35,21 @@
 // Received a message from WCSession.default.sendMessage
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void(^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"WatchConnectivity :: didReceiveMessage :: msg: %@", message);
+        NSLog(@"WatchConnectivity :: didReceiveMessage :: replyHandler :: msg: %@", message);
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : message];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
         replyHandler(message);
+    });
+}
+
+// Received a message from WCSession.default.sendMessage - no replyHandler
+- (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"WatchConnectivity :: didReceiveMessage :: msg: %@", message);
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : message];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
     });
 }
 
@@ -55,33 +65,43 @@
 
 // Sends a message to the watch through WCSession.default.sendMessage
 - (void)sendMessage:(CDVInvokedUrlCommand*)command {
-    NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
-    NSLog(@"WatchConnectivity :: sendMessage :: msg: %@", messageDictionary);
-    if (messageDictionary != nil) {
-        [[WCSession defaultSession] sendMessage:messageDictionary
-                                   replyHandler:^(NSDictionary *reply) {}
-                                   errorHandler:^(NSError *error) {}
-         ];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    } else {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
+        NSLog(@"WatchConnectivity :: sendMessage :: msg: %@", messageDictionary);
+        if (messageDictionary != nil) {
+            [[WCSession defaultSession] sendMessage:messageDictionary
+                                       replyHandler:^(NSDictionary *reply) {}
+                                       errorHandler:^(NSError *error) {}
+             ];
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        } else {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    });
 }
 
 // Sends a message to the watch through WCSession.default.updateApplicationContext
 - (void)updateApplicationContext:(CDVInvokedUrlCommand*)command {
-    NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
-    NSLog(@"WatchConnectivity :: updateApplicationContext :: msg: %@", messageDictionary);
-    if (messageDictionary != nil) {
-        [[WCSession defaultSession] updateApplicationContext:messageDictionary];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    } else {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
+        NSLog(@"WatchConnectivity :: updateApplicationContext :: msg: %@", messageDictionary);
+        if (messageDictionary != nil) {
+            NSError* error = nil;
+            BOOL isContextUpdated = [[WCSession defaultSession] updateApplicationContext:messageDictionary error:&error];
+            if (isContextUpdated){
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            } else {
+                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            }
+        } else {
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    });
 }
 
 @end
