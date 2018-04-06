@@ -22,7 +22,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 ```js
     // Receiving messages from Watch :: AppleWatch -> iPhone
     var receiveMessageSuccess = function(message){
-        // Either from sendMessage or updateApplicationContext
+        // Either from a sendMessage (with or without handlers) or updateApplicationContext
         var value = JSON.stringify(message);
         alert("Received message from Apple Watch : "+value);
     };
@@ -40,13 +40,13 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
     
     // Initialised WatchConnectivity Session successfully
     var initWatchSuccess = function() {
-        // Sends a message
-        var data = {message: "hello from phone", value: "1234", foo: "bar"};
-        iWatchConnectivity.sendMessage(data, sendMessageSuccess, sendMessageFailure);
-	// Alternative way of sending a message
-	iWatchConnectivity.updateApplicationContext(data, sendMessageSuccess, sendMessageFailure);
+        // Sends a message through 'sendMessage'
+        var message = {message: "hello from phone", value: "1234", foo: "bar"};
+        iWatchConnectivity.sendMessage(message, sendMessageSuccess, sendMessageFailure);
+	// Sends a message through 'updateApplicationContext'
+	iWatchConnectivity.updateApplicationContext(message, sendMessageSuccess, sendMessageFailure);
         
-	// Receive messages
+	// Register to receive messages
         iWatchConnectivity.messageReceiver(receiveMessageSuccess, receiveMessageFailure);
     };
     var initWatchFailure = function() {
@@ -90,7 +90,7 @@ func session(session: WCSession, didReceiveApplicationContext applicationContext
 }
 
 // Sending a message to iPhone - WCSession.default.sendMessage
-func sendMessageNow() {
+func sendMessageNowWithHandlers() {
     let message = ["message": "hello from watch", "value": "4321", "bar": "foo"];
     WCSession.default.sendMessage( 
         message,
@@ -103,11 +103,17 @@ func sendMessageNow() {
     );
 }
 
+// Sending a message to iPhone - WCSession.default.sendMessage
+func sendMessageNowWithoutHandlers() {
+    let message2 = ["message2": "hello from watch", "value2": "4321", "bar2": "foo"];
+    WCSession.default.sendMessage(message2, replyHandler:nil);
+}
+
 // Sending a message to iPhone - WCSession.default.updateApplicationContext
 func sendMessage() {
     do {
-        let message = ["message2": "hello from watch", "value": "54321", "bar2": "foo"];
-	try WCSession.default.updateApplicationContext(message);
+        let message3 = ["message3": "hello from watch", "value3": "54321", "bar3": "foo"];
+	try WCSession.default.updateApplicationContext(message3);
     } catch {
         print("InterfaceController :: sendMessage :: error: ", error.localizedDescription);
     }
