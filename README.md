@@ -107,7 +107,7 @@ func sendMessageNow() {
 func sendMessage() {
     do {
         let message = ["message2": "hello from watch", "value": "54321", "bar2": "foo"];
-	    try WCSession.default.updateApplicationContext(message);
+	try WCSession.default.updateApplicationContext(message);
     } catch {
         print("InterfaceController :: sendMessage :: error: ", error.localizedDescription);
     }
