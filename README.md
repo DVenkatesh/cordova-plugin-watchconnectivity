@@ -77,6 +77,9 @@ func session(_ session: WCSession, activationDidCompleteWith activationState: WC
     }
 }
 
+
+// - - - RECEIVING MESSAGES 'FROM' CORDOVA (JS)
+
 // Implement didReceiveMessage WatchConnectivity - handler/callback to receive its incoming messages
 func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) {
     // Receiving messages from iPhone
@@ -88,6 +91,9 @@ func session(session: WCSession, didReceiveApplicationContext applicationContext
     // Receiving messages from iPhone
     print("InterfaceController :: session :: updateApplicationContext: ", message);
 }
+
+
+// - - - SENDING MESSAGES 'TO' CORDOVA (JS)
 
 // Sending a message to iPhone - WCSession.default.sendMessage
 func sendMessageNowWithHandlers() {
