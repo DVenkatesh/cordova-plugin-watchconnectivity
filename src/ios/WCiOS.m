@@ -5,8 +5,11 @@
 @synthesize messageReceiver;
 @synthesize messageDictionary;
 
+// Init does the WCSession.activateSession and keeps the callbackId pointer
+// the callbackId pointer is later used when messages are received in
 - (void)init:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"WatchConnectivity :: init");
     [self.commandDelegate runInBackground:^{
         NSString* callbackId = [command callbackId];
         CDVPluginResult* pluginResult = nil;
@@ -21,19 +24,39 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId: callbackId];
     }];
 }
+
+// It gets invoked when a message is received by didReceiveMessage
+// or alternatively through didReceiveApplicationContext
 - (void)messageReceiver:(CDVInvokedUrlCommand*)command {
+    NSLog(@"WatchConnectivity :: messageReceiver");
     self.messageReceiver = [command callbackId];
 }
+
+// Received a message from WCSession.default.sendMessage
 - (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void(^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
     dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"WatchConnectivity :: didReceiveMessage :: msg: %@", message);
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : message];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
         replyHandler(message);
     });
 }
+
+// Received a message from WCSession.default.updateApplicationContext
+- (void) session:(nonnull WCSession *)session didReceiveApplicationContext:(nonnull NSDictionary<NSString *,id> *)applicationContext {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"WatchConnectivity :: didReceiveApplicationContext :: msg: %@", applicationContext);
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary : applicationContext];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.messageReceiver];
+    });
+}
+
+// Sends a message to the watch through WCSession.default.sendMessage
 - (void)sendMessage:(CDVInvokedUrlCommand*)command {
     NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
+    NSLog(@"WatchConnectivity :: sendMessage :: msg: %@", messageDictionary);
     if (messageDictionary != nil) {
         [[WCSession defaultSession] sendMessage:messageDictionary
                                    replyHandler:^(NSDictionary *reply) {}
@@ -47,5 +70,18 @@
     }
 }
 
-@end
+// Sends a message to the watch through WCSession.default.updateApplicationContext
+- (void)updateApplicationContext:(CDVInvokedUrlCommand*)command {
+    NSDictionary* messageDictionary = [[command arguments] objectAtIndex:0];
+    NSLog(@"WatchConnectivity :: updateApplicationContext :: msg: %@", messageDictionary);
+    if (messageDictionary != nil) {
+        [[WCSession defaultSession] updateApplicationContext:messageDictionary];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    } else {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No messsage to send!"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+}
 
+@end

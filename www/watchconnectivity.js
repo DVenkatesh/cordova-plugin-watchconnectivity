@@ -9,5 +9,8 @@ module.exports = {
     },
     sendMessage: function (messageDictionary, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "WatchConnectivity", "sendMessage", [messageDictionary]);
+    },
+    updateApplicationContext: function (messageDictionary, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "WatchConnectivity", "updateApplicationContext", [messageDictionary]);
     }
 };

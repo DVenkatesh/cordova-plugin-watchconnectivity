@@ -22,6 +22,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 ```js
     // Receiving messages from Watch :: iWatch -> iPhone
     var receiveMessageSuccess = function(message){
+        // Either from sendMessage or updateApplicationContext
         var value = JSON.stringify(message);
         alert("Received message from Apple Watch : "+value);
     };
@@ -56,11 +57,11 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 
 ### Swift
 ```swift
-// Setup and activate session in awakeWithContext or willActivate
-if WCSession.isSupported() {
-    let session = WCSession.defaultSession()
-    session.delegate = self
-    session.activateSession()
+// Setup and activate session in 'awakeWithContext' or 'willActivate' methods
+if (WCSession.isSupported()) {
+    let session = WCSession.defaultSession();
+    session.delegate = self;
+    session.activateSession();
 }
 
 // Implement activationDidCompleteWith to know when it has been paired
@@ -73,58 +74,48 @@ func session(_ session: WCSession, activationDidCompleteWith activationState: WC
     }
 }
 
-// Implement didReceiveMessage WatchConnectivity handler/callback to receive incoming messages
-func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+// Implement didReceiveMessage WatchConnectivity - handler/callback to receive its incoming messages
+func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) {
     // Receiving messages from iPhone
-    print("InterfaceController :: session :: message: ", message);
+    print("InterfaceController :: session :: didReceiveMessage: ", message);
 }
 
-// Sending a message to iPhone
-func sendMessage:(message: String) -> Void{
-    let message = ["message": "hello from watch", "value": "4321", "bar": "foo"]
+// Implement didReceiveApplicationContext WatchConnectivity - handler/callback to receive its incoming messages
+func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+    // Receiving messages from iPhone
+    print("InterfaceController :: session :: updateApplicationContext: ", message);
+}
+
+// Sending a message to iPhone - WCSession.default.sendMessage
+func sendMessageNow() {
+    let message = ["message": "hello from watch", "value": "4321", "bar": "foo"];
     WCSession.default.sendMessage( 
         message,
         replyHandler: { (response) -> Void in
-            print("transferSurfSession :: Send message success : \(response)")
+            print("InterfaceController :: sendMessageNow :: Send message success : \(response)")
         },
         errorHandler: { (error) -> Void in
-            print("transferSurfSession :: An error happened: \(error)")
+            print("InterfaceController :: sendMessageNow :: An error happened: \(error)")
         }
     );
+}
+
+// Sending a message to iPhone - WCSession.default.updateApplicationContext
+func sendMessage() {
+    do {
+        let message = ["message2": "hello from watch", "value": "54321", "bar2": "foo"];
+	    try WCSession.default.updateApplicationContext(message);
+    } catch {
+        print("InterfaceController :: sendMessage :: error: ", error.localizedDescription);
+    }
 }
 ```
 ### Objective-C
 ```objective-c
 
 // FIXME - Help wanted! Translate the code above from Swift to Objective-C
-// The code below may or not work; all I know is that it may need updating.
-// - - - 
-// Setup and activate session in awakeWithContext or willActivate
-if ([WCSession isSupported]) {
-    WCSession *session = [WCSession defaultSession];
-    session.delegate = self;
-    [session activateSession];
-}
+// Send through a PR and I will happily merge it, thank you very much.
 
-// Implement didReceiveMessage WatchConnectivity handler/callback to receive incoming messages
-- (void)session:(WCSession *)session didReceiveMessage:(NSDictionary<NSString *, id> *)message replyHandler:(void(^)(NSDictionary<NSString *, id> *replyMessage))replyHandler {
-    NSString *message = [message objectForKey:@"message"];
-    NSLog(@"%@",message);
-    [self sendMessage:@"Message from iWatch"];
-}
-
-// Send message
-- (void)sendMessage:(NSString*)message {
-    NSDictionary *messageDictionary = [[NSDictionary alloc] initWithObjects:@[message] forKeys:@[@"message"]];
-    [[WCSession defaultSession] sendMessage:messageDictionary
-                               replyHandler:^(NSDictionary *reply) {
-                                   NSLog(@"Send message success");
-                               }
-                               errorHandler:^(NSError *error) {
-                                   NSLog(@"Send message failed");
-                               }
-     ];
-}
 ```
 
 ## Credits

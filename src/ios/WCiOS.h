@@ -13,4 +13,6 @@
 - (void) init:(CDVInvokedUrlCommand*)command;
 - (void) messageReceiver:(CDVInvokedUrlCommand*)command;
 - (void) sendMessage:(CDVInvokedUrlCommand*)command;
+- (void) updateApplicationContext:(CDVInvokedUrlCommand*)command;
+
 @end

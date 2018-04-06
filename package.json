@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-watchconnectivity",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "WatchConnectivity",
   "main": "www/watchconnectivity.js",
   "platforms": [
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DVenkatesh/cordova-plugin-watchconnectivity.git"
+    "url": "git+https://github.com/guikeller/cordova-plugin-watchconnectivity.git"
   },
   "keywords": [
     "cordova",
@@ -23,10 +23,10 @@
     "ionic",
     "watchconnectivity"
   ],
-  "author": "Originally Written by Venkatesh D and Vagish M M",
-  "license": "ISC",
+  "author": "Gui Keller - Originally Written by Venkatesh D and Vagish M M",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DVenkatesh/cordova-plugin-watchconnectivity/issues"
+    "url": "https://github.com/guikeller/cordova-plugin-watchconnectivity/issues"
   },
-  "homepage": "https://github.com/DVenkatesh/cordova-plugin-watchconnectivity#readme"
+  "homepage": "https://github.com/guikeller/cordova-plugin-watchconnectivity#readme"
 }
