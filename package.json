@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-watchconnectivity",
+  "version": "1.3.0",
+  "description": "WatchConnectivity",
+  "main": "www/watchconnectivity.js",
+  "platforms": [
+    "ios"
+  ],
+  "directories": {
+    "lib": "src/ios"
+  },
+  "scripts": {
+    "test": "echo \"Error: no tests to run\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guikeller/cordova-plugin-watchconnectivity.git"
+  },
+  "keywords": [
+    "cordova",
+    "watchos",
+    "apple",
+    "ionic",
+    "watchconnectivity"
+  ],
+  "author": "Gui Keller - Originally Written by Venkatesh D and Vagish M M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guikeller/cordova-plugin-watchconnectivity/issues"
+  },
+  "homepage": "https://github.com/guikeller/cordova-plugin-watchconnectivity#readme"
+}
